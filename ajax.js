@@ -1,7 +1,7 @@
 
 // Создание пользователя;
 $('.registrate').on('click', () => {
-    if (($('#userAdd').children('.login')).val() === '' && ($('#userAdd').children('.password')).val() === ''){
+    if (($('.loginAdd').val() === '') || ($('.passwordAdd').val() === '')){
         alert('Не все поля заполнены');
     }
     else{
@@ -26,7 +26,7 @@ $('.registrate').on('click', () => {
 
 // Обновление информации пользователя;
 $('.update').on('click', () => {
-    if (($('.loginUpdate').val() === '' || $('.passwordUpdate').val() === '') && $('.idUpdate').val() === ''){
+    if (($('.loginUpdate').val() == '' && $('.passwordUpdate').val() == '') || $('.idUpdate').val() === ''){
         alert('Не все поля заполнены');
     }
     else{
@@ -42,12 +42,34 @@ $('.update').on('click', () => {
     
                 },   /* Параметры передаваемые в запросе. */
                 success: function(data){ 
-                    alert(data)  /* функция которая будет выполнена после успешного запроса.  */
+                    alert('success')  /* функция которая будет выполнена после успешного запроса.  */
                 }
             }
         )
     }
 })
 // Удаление пользователя;
+$('.delete').on('click', () => {
+    if ($('.loginDelete').val() === '' ){
+        alert('Не все поля заполнены');
+    }
+    else{
+        $.ajax(
+            {
+                url: 'act.php',         /* Куда пойдет запрос */
+                method: 'post',             /* Метод передачи (post или get) */
+                dataType: 'html',          /* Тип данных в ответе (xml, json, script, html). */
+                data: { 
+                    'login': $('.loginDelete').val(),
+                    'function' : 'delete'
+    
+                },   /* Параметры передаваемые в запросе. */
+                success: function(data){ 
+                    alert('delete')  /* функция которая будет выполнена после успешного запроса.  */
+                }
+            }
+        )
+    }
+})
 // Авторизация пользователя;
 // Получить информацию о пользователе.

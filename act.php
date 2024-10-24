@@ -11,8 +11,10 @@ switch ($_POST['function']) {
         registrate($_POST['login'], $_POST['password']);
         break;
     case 'update':
-        var_dump($_POST);
         update($_POST['id'], $_POST['login'], $_POST['password']);
+        break;
+    case 'delete':
+        delete($_POST['login']);
         break;
 }
 
@@ -34,4 +36,10 @@ function update($id, $login, $password)
         $query = "UPDATE user SET password = '$password' WHERE id = '$id'";
         dbFunctions::db($query);
     }
+}
+
+function delete($login)
+{
+    $query = "DELETE FROM user where login = '$login'";
+    dbFunctions::db($query);
 }

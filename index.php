@@ -38,19 +38,19 @@
     <!-- delete -->
     <div>
         <form id='delete' method="POST">
-            <input type="text" class='login' placeholder="login">
-            <input type="password" class='password' placeholder="password">
-            <input type="button" value="delete">
+            <input type="text" class='loginDelete' placeholder="login">
+            <input type="button" value="delete" class="delete">
         </form>
     </div>
 
     <!-- getdata -->
     <div>
         <form id='getdata' method="GET">
-            <input type="text" placeholder="login">
-            <input type="button" value="getinf0">
+            <input type="text" placeholder="login" class="loginInfo">
+            <input type="button" value="getinfo" class="getinfo">
         </form>
     </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script src="ajax.js"></script>
