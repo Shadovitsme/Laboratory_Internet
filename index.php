@@ -8,15 +8,15 @@
 
 <body>
     <div>
-        <form id='userAdd'>
-            <input type="text" placeholder="login">
-            <input type="password" placeholder="password">
-            <input type="button" value="registration">
+        <form id='userAdd' method="POST">
+            <input type="text" class='login' placeholder="login">
+            <input type="password" class='password' placeholder="password">
+            <input type="button" id='registrate' value="registration">
         </form>
     </div>
 
     <div>
-        <form id='auth'>
+        <form id='auth' method="POST">
             <input type="text" placeholder="login">
             <input type="password" placeholder="password">
             <input type="button" value="auth">
@@ -24,7 +24,7 @@
     </div>
 
     <div>
-        <form id='update'>
+        <form id='update' method='POST'>
             <input type="text" placeholder="login">
             <input type="password" placeholder="password">
             <input type="button" value="update">
@@ -32,7 +32,7 @@
     </div>
 
     <div>
-        <form id='delete'>
+        <form id='delete' method="POST">
             <input type="text" placeholder="login">
             <input type="password" placeholder="password">
             <input type="button" value="delete">
@@ -40,11 +40,14 @@
     </div>
 
     <div>
-        <form id='getdata'>
+        <form id='getdata' method="GET">
             <input type="text" placeholder="login">
             <input type="button" value="getinf0">
         </form>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="ajax.js"></script>
 </body>
 
 </html>

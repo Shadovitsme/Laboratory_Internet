@@ -6,5 +6,14 @@ require_once('db.php');
 
 use database\dbFunctions;
 
-$query = "INSERT INTO user (login, password) VALUES ('test', 'test')";
-echo dbFunctions::db($query);
+switch ($_POST['function']) {
+    case 'registrate':
+        registrate($_POST['login'], $_POST['password']);
+        break;
+}
+
+function registrate($login, $password)
+{
+    $query = "INSERT INTO user (login, password) VALUES ('$login', '$password')";
+    dbFunctions::db($query);
+}
