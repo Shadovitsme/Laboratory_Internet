@@ -1,3 +1,4 @@
+import './bootstrap';
 
 // Создание пользователя;
 $('.registrate').on('click', () => {

@@ -19,9 +19,9 @@
     <!-- login -->
     <div>
         <form id='auth' method="POST">
-            <input type="text" class='login' placeholder="login">
-            <input type="password" class='password' placeholder="password">
-            <input type="button" value="auth">
+            <input type="text" class='loginLog' placeholder="login">
+            <input type="password" class='passwordLas' placeholder="password">
+            <input type="button" value="auth" class="auth">
         </form>
     </div>
 
