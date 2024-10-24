@@ -1,3 +1,6 @@
+import './bootstrap';
+
+const api_pref = '/api/v1/';
 
 // Создание пользователя;
 $('.registrate').on('click', () => {
@@ -7,7 +10,7 @@ $('.registrate').on('click', () => {
     else{
     $.ajax(
         {
-            url: 'act.php',         /* Куда пойдет запрос */
+            url: api_pref + 'users',         /* Куда пойдет запрос */
             method: 'post',             /* Метод передачи (post или get) */
             dataType: 'html',          /* Тип данных в ответе (xml, json, script, html). */
             data: { 'login': $('.loginAdd').val(),
@@ -32,14 +35,12 @@ $('.update').on('click', () => {
     else{
         $.ajax(
             {
-                url: 'act.php',         /* Куда пойдет запрос */
+                url: api_pref + `users/${$('.idUpdate').val()}}`,         /* Куда пойдет запрос */
                 method: 'post',             /* Метод передачи (post или get) */
                 dataType: 'html',          /* Тип данных в ответе (xml, json, script, html). */
-                data: { 'id' : $('.idUpdate').val(),
+                data: {
                     'login': $('.loginUpdate').val(),
                     'password' : $('.passwordUpdate').val(),
-                    'function' : 'update'
-    
                 },   /* Параметры передаваемые в запросе. */
                 success: function(data){ 
                     alert('success')  /* функция которая будет выполнена после успешного запроса.  */
@@ -50,22 +51,17 @@ $('.update').on('click', () => {
 })
 // Удаление пользователя;
 $('.delete').on('click', () => {
-    if ($('.loginDelete').val() === '' ){
+    if ($('.idUpdate').val() === '' ){
         alert('Не все поля заполнены');
     }
     else{
         $.ajax(
             {
-                url: 'act.php',         /* Куда пойдет запрос */
+                url: api_pref + `user/${$('.idUpdate').val()}`,         /* Куда пойдет запрос */
                 method: 'post',             /* Метод передачи (post или get) */
                 dataType: 'html',          /* Тип данных в ответе (xml, json, script, html). */
-                data: { 
-                    'login': $('.loginDelete').val(),
-                    'function' : 'delete'
-    
-                },   /* Параметры передаваемые в запросе. */
                 success: function(data){ 
-                    alert('delete')  /* функция которая будет выполнена после успешного запроса.  */
+                    alert('deleted: ', data)  /* функция которая будет выполнена после успешного запроса.  */
                 }
             }
         )
