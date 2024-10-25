@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use \App\Http\Controllers\UserController;
 
 Route::prefix('v1')->group(function () {
     Route::addRoute('*', '/', function () {
@@ -15,11 +15,11 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/users', [UserController::class, 'register']);
 
-    Route::patch('/users', [UserController::class, 'update']);
+    Route::patch('/users/{id?}', [UserController::class, 'update'])->where('id', '[0-9]*');
 
     Route::delete('/users/{id}', [UserController::class, 'delete'])->where('id', '[0-9]*');
 
-    Route::get('users/authenticate', [UserController::class, 'authenticate']);
+    Route::post('users/authenticate', [UserController::class, 'authenticate']);
 });
 
 Route::prefix('v2')->group(function () {

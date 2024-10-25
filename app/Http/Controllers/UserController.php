@@ -6,33 +6,36 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function get(Request $req, $id = null)
+    public function get(Request $req, string $id = null)
     {
         if ($id === null && $req->query('login') === null) {
-            return json_encode([
-                array_map(function ($x) {
+            echo json_encode([
+                array_map(function () {
                     return [
-                        'id' => random_int(1000, 1000 * $x),
-                        'login' => random_bytes(4 + $x),
-                        'password' => random_bytes(16),
+                        'id' => random_int(10000, 99999),
+                        'login' => base64_encode(random_int(10000, 99999)),
+                        'password' => base64_encode(random_int(10000, 99999)),
                     ];
                 }, range(0, 10))
             ]);
+            return;
         } elseif ($req->query('login') !== null) {
-            return json_encode([
+            echo json_encode([
                 'id' => random_int(1000, 9999),
                 'login' => $req->query('login'),
-                'password' => random_bytes(16),
+                'password' => base64_encode(random_int(10000, 99999)),
             ]);
+            return;
         } elseif ($id !== null) {
-            return json_encode([
+            echo json_encode([
                 'id' => $id,
-                'login' => random_bytes(10),
-                'password' => random_bytes(16),
+                'login' => base64_encode(random_int(10000, 99999)),
+                'password' => base64_encode(random_int(10000, 99999)),
             ]);
+            return;
         }
 
-        return json_encode([
+        echo json_encode([
             'error' => 'no id nor login provided'
         ]);
     }
@@ -40,77 +43,83 @@ class UserController extends Controller
     public function authenticate(Request $req)
     {
         if ($req->json('login') === null) {
-            return json_encode([
+            echo json_encode([
                 'error' => 'no login provided'
             ]);
+            return;
         } elseif ($req->json('password') === null) {
-            return json_encode([
+            echo json_encode([
                 'error' => 'no password provided'
             ]);
+            return;
         }
 
-        return json_encode([
+        echo json_encode([
             'id' => random_int(1000, 9999),
         ]);
     }
 
-    public function delete(Request $req, $id = null)
+    public function delete(Request $req, string $id = null)
     {
         if ($id === null) {
-            return json_encode([
+            echo json_encode([
                 'error' => 'no id provided'
             ]);
+            return;
         }
-
-        return json_encode([
+        echo json_encode([
             'id' => random_int(1000, 9999),
-            'login' => random_bytes(10),
-            'password' => random_bytes(16),
+            'login' => base64_encode(random_int(10000, 99999)),
+            'password' => base64_encode(random_int(10000, 99999)),
         ]);
     }
 
-    public function update(Request $req, $id = null)
+    public function update(Request $req, string $id = null)
     {
         if ($id === null) {
-            return json_encode([
+            echo json_encode([
                 'error' => 'no id provided'
             ]);
+            return;
         }
 
         $user_data = [];
 
         if ($req->json('login') !== null) {
-            $user_data['login'] = random_bytes(10);
+            $user_data['login'] = $req->json('login');
         }
 
         if ($req->json('password') !== null) {
-            $user_data['password'] = random_bytes(16);
+            $user_data['password'] = $req->json('password');
         }
 
-        return json_encode($user_data);
+        echo json_encode($user_data);
     }
 
     public function register(Request $req)
     {
         if ($req->json('login') === null) {
-            return json_encode([
+            echo json_encode([
                 'error' => 'no login provided'
             ]);
+            return;
         }
 
         if ($req->json('password') === null) {
-            return json_encode([
+            echo json_encode([
                 'error' => 'no password provided'
             ]);
+            return;
         }
 
         if (strlen($req->json('password')) < 12) {
-            return json_encode([
+            echo json_encode([
                 'error' => 'password must contain at least 12 characters'
             ]);
+            return;
         }
 
-        return json_encode([
+        echo json_encode([
             'id' => random_int(1000, 9999),
             'login' => $req->json('login'),
             'password' => $req->json('password'),
@@ -119,6 +128,6 @@ class UserController extends Controller
 
     public function idempotent(string $id)
     {
-        return json_encode('Просто умное слово №' . $id ?: '101');
+        echo json_encode('Просто умное слово №' . $id ?: '101');
     }
 }
