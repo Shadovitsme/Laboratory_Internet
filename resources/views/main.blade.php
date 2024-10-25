@@ -9,7 +9,9 @@
 </head>
 
 <body data-bs-theme="dark">
+
     <x-nav />
+
     <div class="container pt-5">
 
         <x-profile />

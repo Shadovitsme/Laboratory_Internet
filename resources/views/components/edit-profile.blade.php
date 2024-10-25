@@ -1,13 +1,13 @@
-<div class="input-group mb-3">
-    <span class="input-group-text" id="basic-addon1">Изменить пользователя </span>
-    <input type="text" class='form-control js--idUpdate' placeholder="id">
-    <input type="text" class='form-control js--loginUpdate' placeholder="login">
-    <input type="password" class='form-control js--passwordUpdate' placeholder="password">
-    <button class="btn btn-success" value="auth">Обновить!</button>
+<div class="input-group mb-3 js--update">
+    <span class="input-group-text">Изменить пользователя </span>
+    <input type="text" class='form-control js--id' placeholder="id">
+    <input type="text" class='form-control js--login' placeholder="login">
+    <input type="password" class='form-control js--password' placeholder="password">
+    <button class="btn btn-success">Обновить!</button>
 </div>
 
-<div class="input-group mb-3">
-    <span class="input-group-text" id="basic-addon1">Удалить пользователя</span>
-    <input type="text" class='form-control js--loginDelete' placeholder="id ">
-    <button class="btn btn-success" value="auth">Удалить!</button>
+<div class="input-group mb-3 js--delete">
+    <span class="input-group-text">Удалить пользователя</span>
+    <input type="text" class='form-control js--id' placeholder="id ">
+    <button class="btn btn-success">Удалить!</button>
 </div>

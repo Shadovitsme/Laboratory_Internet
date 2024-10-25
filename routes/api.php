@@ -2,39 +2,26 @@
 
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::prefix('v1')->group(function () {
-    Route::get('/', function (Request $request, string $id) {
-        return $request->path();;
+    Route::addRoute('*', '/', function () {
+        return json_encode([
+            'paths' => 'TODO'
+        ]);
     });
 
-    Route::get('/users', function (Request $request, string $id) {
-        return $request->path();
-    });
+    Route::get('/users/{id?}', [UserController::class, 'get'])->where('id', '[0-9]*');
 
-    Route::get('/users/{id?}', function (Request $request, string $id) {
-        return $request->path();;
-    })->where('id', '[0-9]+');
+    Route::post('/users', [UserController::class, 'register']);
 
-    Route::post('/users', function (Request $request, string $id) {
-        return $request->path();;
-    });
+    Route::patch('/users', [UserController::class, 'update']);
 
-    Route::patch('/users', function (Request $request, string $id) {
-        return $request->path();;
-    });
+    Route::delete('/users/{id}', [UserController::class, 'delete'])->where('id', '[0-9]*');
 
-    Route::delete('/users{id}', function (Request $request, string $id) {
-        return $request->path();;
-    })->where('id', '[0-9]+');
-
-    Route::get('/authenticate', function (Request $request, string $id) {
-        return $request->path();;
-    });
+    Route::get('users/authenticate', [UserController::class, 'authenticate']);
 });
 
 Route::prefix('v2')->group(function () {
-    Route::put('/users', function (Request $request, string $id) {
-        return $request->path();;
-    });
+    Route::put('/users/{id?}', [UserController::class, 'idempotent'])->where('id', '[0-9]*');
 });
