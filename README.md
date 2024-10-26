@@ -8,9 +8,9 @@ cd Laboratory_Internet
 cp .env.example .env
 composer update
 php artisan key:generate
-docker compose up
+php artisan migrate:fresh
 npm install
-# or ./vendor/bin/sail npm install
+docker compose up
 ```
 
 Открыть в браузере `http://localhost:80/`
@@ -19,7 +19,7 @@ npm install
 
 ### GET /users
 
-query: ?login=LOGIN
+query: ?login=string
 
 answer: 200 OK
 
@@ -141,6 +141,3 @@ _Можно на чистом php:_
 6. Авторизация пользователя;
 7. Получить информацию о пользователе.
 8. В файле README.md описать реализованные методы.
-
-
-
