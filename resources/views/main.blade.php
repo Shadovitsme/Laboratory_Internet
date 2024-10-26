@@ -14,10 +14,10 @@
 
     <div class="container pt-5">
 
-        <x-profile />
-        <x-edit-profile />
         <x-register />
         <x-authenticate />
+        <x-profile />
+        <x-edit-profile />
 
     </div>
 </body>

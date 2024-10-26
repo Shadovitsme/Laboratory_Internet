@@ -10,17 +10,17 @@
 
 <body data-bs-theme="dark">
 
-    <x-nav/>
+    <x-nav />
 
     <div class="container pt-5">
 
         <p class="lead">
             Это тестовая страница, содержащая все возможные поля и действия для взаимодействия с API.
         </p>
-        <x-profile />
-        <x-edit-profile />
         <x-register />
         <x-authenticate />
+        <x-profile />
+        <x-edit-profile />
 
     </div>
 </body>
