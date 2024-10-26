@@ -7,30 +7,44 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    public function showData($queryResult)
+    {
+        echo json_encode([
+            'id' => $queryResult->id,
+            'login' => $queryResult->name,
+            'password' => $queryResult->password,
+        ]);
+        return;
+    }
+    public function checkZeroArray($queryResult)
+    {
+        if (!empty($queryResult)) {
+            $this->showData($queryResult);
+            return;
+        } else {
+            echo json_encode(
+                [
+                    'error' => 'no such user',
+                ]
+            );
+        };
+    }
+
     public function get(Request $req, string $id = null)
     {
         if ($id !== null) {
             $queryResult = DB::table('users')->find($id);
-            //TODO сделать проверку на нулевой массив
-            echo json_encode([
-                'id' => $id,
-                'login' => $queryResult->name,
-                'password' => $queryResult->password,
-            ]);
-            return;
+            $this->checkZeroArray($queryResult);
+
         } elseif ($req->query('login') !== null) {
             $queryResult = DB::table('users')->where('name', $req->query('login'))->get();
-            //TODO сделать проверку на нулевой массив
-            echo json_encode(['id' => $queryResult[0]->id,
-                'login' => $req->query('login'),
-                'password' => $queryResult[0]->password,
-            ]);
-            
+            $this->checkZeroArray($queryResult[0]);
             return;
-        }
+        } else {
         echo json_encode([
             'error' => 'no id nor login provided'
-        ]);
+            ]);
+        }
     }
 
     public function authenticate(Request $req)
@@ -46,10 +60,10 @@ class UserController extends Controller
             ]);
             return;
         }
-        $queryResult = DB::table('users')->where('name', $req->json('login'))->where('password', $req->json('password'))->get();
+        $queryResult = DB::table('users')->where('name', $req->json('login'))->where('password', hash('sha256', $req->json('password')))->get();
         if (!empty($queryResult[0])) {
             echo json_encode([
-                'id' => $queryResult[0]->id,
+                'success'
             ]);
             return;
         } else {
@@ -67,10 +81,18 @@ class UserController extends Controller
             return;
         }
         DB::table('users')->where('id', $id)->delete();
-        //TODO сделать проверку на успешность удаления
-        echo json_encode([
-            'id' => 'успех!'
-        ]);
+        if (empty((DB::table('users')->where('id', $id)->get())[0])) {
+            echo json_encode([
+                'успех!'
+            ]);
+            return;
+        } else {
+            echo json_encode([
+                'not success'
+            ]);
+            return;
+        }
+
     }
 
     public function update(Request $req, string $id = null)
@@ -81,19 +103,21 @@ class UserController extends Controller
             ]);
             return;
         }
-        $queryResult = DB::table('users')->where('id', $id);
-        //TODO сделать проверку на нулевой массив
+        if (empty((DB::table('users')->where('id', $id)->get())[0])) {
+            echo json_encode(['error' => 'no such user']);
+            return;
+        }
 
         if ($req->json('login') !== null) {
-            $queryResult->update(['name' => $req->json('login')]);
+            DB::table('users')->where('id', $id)->update(['name' => $req->json('login')]);
         }
 
         if ($req->json('password') !== null) {
-            $queryResult->update(['password' => $req->json('password')]);
+            DB::table('users')->where('id', $id)->update(['password' => hash('sha256', $req->json('password'))]);
         }
+        $queryResult = DB::table('users')->where('id', $id)->get();
 
-        //TODO Набор полей не должен отличаться от get()
-        echo json_encode($queryResult->get());
+        $this->showData($queryResult[0]);
     }
 
     public function register(Request $req)
@@ -112,21 +136,25 @@ class UserController extends Controller
             return;
         }
 
-        if (strlen($req->json('password')) < 12) {
+        if (strlen($req->json('password')) < 5) {
             echo json_encode([
                 'error' => 'password must contain at least 12 characters'
             ]);
             return;
         }
-        //TODO При регистрации пользователя у него обязан быть уникальный логин потому что мы по нему ищем
+        $queryResult = DB::table('users')->where('name', $req->json('login'))->get();
+        if (empty($queryResult[0])) {
         DB::table('users')->insert([
             'name' => $req->json('login'),
-            'email' => 'default@mail.ru',
-            'password' => $req->json('password')
+                'email' => rand(10, 100) . '@mail.ru',
+                'password' => hash('sha256', $req->json('password')),
         ]);
-        echo json_encode([
-            'id' => DB::table('users')->where('name', $req->json('login'))->get()
-        ]);
+            $queryResult = DB::table('users')->where('name', $req->json('login'))->get();
+            $this->showData($queryResult[0]);
+        } else {
+            echo json_encode('login already exists');
+            return;
+        }
     }
 
 }
