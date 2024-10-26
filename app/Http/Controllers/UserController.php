@@ -67,8 +67,7 @@ class UserController extends Controller
             ]);
             return;
         }
-        echo json_encode([
-            'id' => random_int(1000, 9999),
+        echo json_encode(['id' => $id,
             'login' => base64_encode(random_int(10000, 99999)),
             'password' => base64_encode(random_int(10000, 99999)),
         ]);
