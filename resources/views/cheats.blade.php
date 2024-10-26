@@ -21,6 +21,7 @@
         <x-authenticate />
         <x-profile />
         <x-edit-profile />
+        <x-result-feed />
 
     </div>
 </body>

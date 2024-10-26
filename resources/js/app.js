@@ -1,5 +1,34 @@
 import "./bootstrap";
 
+let results = [];
+
+const result_queue = (header, body) => {
+    results.unshift(
+        {
+            color: Math.random()*360,
+            header: header,
+            body: body
+        }
+    );
+
+    if (results.length > 4) {
+        results.pop();
+    }
+
+    $(".js--result-feed").html("");
+
+    results.forEach(el => {
+        $("<div/>", {class: "card", style: `background: hsl(${el.color}, 50%, 16%)`}).html(
+            $("<div/>", {class: "card-body"}).append(
+            $("<h5/>", {calss: "card-header"}).html(el.header),
+            $("<p/>", {class: "card-text"}).html(el.body)
+        )
+        ).appendTo(".js--result-feed");
+    });
+
+    return true;
+}
+
 const api_pref = "/api/v1/";
 
 $(".js--auth button").on("click", () => {
@@ -18,7 +47,7 @@ $(".js--auth button").on("click", () => {
                 password: password,
             }),
             success: function (data) {
-                alert(JSON.stringify(data));
+                result_queue("Результат авторизации пользователя", JSON.stringify(data));
             },
         });
     }
@@ -42,7 +71,7 @@ $(".js--get button").on("click", () => {
             dataType: "json",
             data: payload,
             success: function (data) {
-                alert(JSON.stringify(data));
+                result_queue("Данные пользователя", JSON.stringify(data));
             },
         });
     }
@@ -58,7 +87,7 @@ $(".js--delete button").on("click", () => {
             method: "DELETE",
             dataType: "json",
             success: function (data) {
-                alert(JSON.stringify(data));
+                result_queue("Результат удаления пользователя", JSON.stringify(data));
             },
         });
     }
@@ -80,7 +109,7 @@ $(".js--register button").on("click", () => {
                 password: password,
             }),
             success: function (data) {
-                alert(JSON.stringify(data));
+                result_queue("Результат регистрации пользователя", JSON.stringify(data));
             },
         });
     }
@@ -103,30 +132,7 @@ $(".js--update button").on("click", () => {
                 password: password,
             }),
             success: function (data) {
-                alert(JSON.stringify(data));
-            },
-        });
-    }
-});
-
-$(".js--update-v2 button").on("click", () => {
-    let id = $(".js--update-v2 .js--id").val().trim();
-    let login = $(".js--update-v2 .js--login").val().trim();
-    let password = $(".js--update-v2 .js--password").val().trim();
-    if (id === "") {
-        alert("id не предоствлен!");
-    } else {
-        $.ajax({
-            url: api_pref + `users/${id}`,
-            method: "PUT",
-            dataType: "json",
-            contentType: "applicatio/json",
-            data: JSON.stringify({
-                login: login,
-                password: password,
-            }),
-            success: function (data) {
-                alert(JSON.stringify(data));
+                result_queue("Результат изменения пользователя", JSON.stringify(data));
             },
         });
     }
