@@ -19,10 +19,9 @@ class UserController extends Controller
             return;
         } elseif ($req->query('login') !== null) {
             $queryResult = DB::table('users')->where('name', $req->query('login'))->get();
-            echo json_encode([
-                'id' => $queryResult->id,
+            echo json_encode(['id' => $queryResult[0]->id,
                 'login' => $req->query('login'),
-                'password' => $queryResult->password,
+                'password' => $queryResult[0]->password,
             ]);
             return;
         }
@@ -65,10 +64,9 @@ class UserController extends Controller
             ]);
             return;
         }
-        // DB::table('users')->find($id)->delete();
-        echo json_encode(['id' => $id,
-            'login' => base64_encode(random_int(10000, 99999)),
-            'password' => base64_encode(random_int(10000, 99999)),
+        DB::table('users')->where('id', $id)->delete();
+        echo json_encode([
+            'id' => 'успех!'
         ]);
     }
 
