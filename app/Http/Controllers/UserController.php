@@ -3,38 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     public function get(Request $req, string $id = null)
     {
-        if ($id === null && $req->query('login') === null) {
+        if ($id !== null) {
+            $queryResult = DB::table('users')->find($id);
             echo json_encode([
-                array_map(function () {
-                    return [
-                        'id' => random_int(10000, 99999),
-                        'login' => base64_encode(random_int(10000, 99999)),
-                        'password' => base64_encode(random_int(10000, 99999)),
-                    ];
-                }, range(0, 10))
+                'id' => $id,
+                'login' => $queryResult->name,
+                'password' => $queryResult->password,
             ]);
             return;
         } elseif ($req->query('login') !== null) {
+            $queryResult = DB::table('users')->where('name', $req->query('login'))->get();
             echo json_encode([
-                'id' => random_int(1000, 9999),
+                'id' => $queryResult->id,
                 'login' => $req->query('login'),
-                'password' => base64_encode(random_int(10000, 99999)),
-            ]);
-            return;
-        } elseif ($id !== null) {
-            echo json_encode([
-                'id' => $id,
-                'login' => base64_encode(random_int(10000, 99999)),
-                'password' => base64_encode(random_int(10000, 99999)),
+                'password' => $queryResult->password,
             ]);
             return;
         }
-
         echo json_encode([
             'error' => 'no id nor login provided'
         ]);
@@ -53,10 +44,17 @@ class UserController extends Controller
             ]);
             return;
         }
-
-        echo json_encode([
-            'id' => random_int(1000, 9999),
-        ]);
+        $queryResult = DB::table('users')->where('name', $req->json('login'))->where('password', $req->json('password'))->get();
+        if (!empty($queryResult[0])) {
+            echo json_encode([
+                'id' => $queryResult[0]->id,
+            ]);
+            return;
+        } else {
+            echo json_encode([
+                'error' => 'no such user'
+            ]);
+        }
     }
 
     public function delete(Request $req, string $id = null)
