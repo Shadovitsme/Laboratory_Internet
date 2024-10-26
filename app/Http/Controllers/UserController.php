@@ -65,6 +65,7 @@ class UserController extends Controller
             ]);
             return;
         }
+        // DB::table('users')->find($id)->delete();
         echo json_encode(['id' => $id,
             'login' => base64_encode(random_int(10000, 99999)),
             'password' => base64_encode(random_int(10000, 99999)),
@@ -79,18 +80,17 @@ class UserController extends Controller
             ]);
             return;
         }
-
-        $user_data = [];
+        $queryResult = DB::table('users')->find($id);
 
         if ($req->json('login') !== null) {
-            $user_data['login'] = $req->json('login');
+            $queryResult->update(['name' => $req->json('login')]);
         }
 
         if ($req->json('password') !== null) {
-            $user_data['password'] = $req->json('password');
+            $queryResult->update(['password' => $req->json('password')]);
         }
 
-        echo json_encode($user_data);
+        echo json_encode($queryResult->get());
     }
 
     public function register(Request $req)
@@ -115,11 +115,13 @@ class UserController extends Controller
             ]);
             return;
         }
-
+        DB::table('users')->insert([
+            'name' => $req->json('login'),
+            'email' => 'default@mail.ru',
+            'password' => $req->json('password')
+        ]);
         echo json_encode([
-            'id' => random_int(1000, 9999),
-            'login' => $req->json('login'),
-            'password' => $req->json('password'),
+            'id' => DB::table('users')->where('name', $req->json('login'))->get()
         ]);
     }
 
