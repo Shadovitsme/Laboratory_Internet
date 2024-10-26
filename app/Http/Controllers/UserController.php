@@ -11,6 +11,7 @@ class UserController extends Controller
     {
         if ($id !== null) {
             $queryResult = DB::table('users')->find($id);
+            //TODO сделать проверку на нулевой массив
             echo json_encode([
                 'id' => $id,
                 'login' => $queryResult->name,
@@ -19,10 +20,12 @@ class UserController extends Controller
             return;
         } elseif ($req->query('login') !== null) {
             $queryResult = DB::table('users')->where('name', $req->query('login'))->get();
+            //TODO сделать проверку на нулевой массив
             echo json_encode(['id' => $queryResult[0]->id,
                 'login' => $req->query('login'),
                 'password' => $queryResult[0]->password,
             ]);
+            
             return;
         }
         echo json_encode([
@@ -50,8 +53,7 @@ class UserController extends Controller
             ]);
             return;
         } else {
-            echo json_encode([
-                'error' => 'no such user'
+            echo json_encode(['error' => 'wrong login or password'
             ]);
         }
     }
@@ -65,6 +67,7 @@ class UserController extends Controller
             return;
         }
         DB::table('users')->where('id', $id)->delete();
+        //TODO сделать проверку на успешность удаления
         echo json_encode([
             'id' => 'успех!'
         ]);
@@ -78,7 +81,8 @@ class UserController extends Controller
             ]);
             return;
         }
-        $queryResult = DB::table('users')->find($id);
+        $queryResult = DB::table('users')->where('id', $id);
+        //TODO сделать проверку на нулевой массив
 
         if ($req->json('login') !== null) {
             $queryResult->update(['name' => $req->json('login')]);
@@ -88,6 +92,7 @@ class UserController extends Controller
             $queryResult->update(['password' => $req->json('password')]);
         }
 
+        //TODO Набор полей не должен отличаться от get()
         echo json_encode($queryResult->get());
     }
 
@@ -113,6 +118,7 @@ class UserController extends Controller
             ]);
             return;
         }
+        //TODO При регистрации пользователя у него обязан быть уникальный логин потому что мы по нему ищем
         DB::table('users')->insert([
             'name' => $req->json('login'),
             'email' => 'default@mail.ru',
@@ -123,8 +129,4 @@ class UserController extends Controller
         ]);
     }
 
-    public function idempotent(string $id)
-    {
-        echo json_encode('Просто умное слово №' . $id ?: '101');
-    }
 }

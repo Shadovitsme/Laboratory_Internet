@@ -5,12 +5,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\UserController;
 
 Route::prefix('v1')->group(function () {
-    Route::addRoute('*', '/', function () {
-        return json_encode([
-            'paths' => 'TODO'
-        ]);
-    });
-
+    
     Route::get('/users/{id?}', [UserController::class, 'get'])->where('id', '[0-9]*');
 
     Route::post('/users', [UserController::class, 'register']);
@@ -22,6 +17,3 @@ Route::prefix('v1')->group(function () {
     Route::post('users/authenticate', [UserController::class, 'authenticate']);
 });
 
-Route::prefix('v2')->group(function () {
-    Route::put('/users/{id?}', [UserController::class, 'idempotent'])->where('id', '[0-9]*');
-});
