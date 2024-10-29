@@ -11,6 +11,7 @@ php artisan key:generate
 npm install
 sudo docker compose up -d
 vendor/bin/sail artisan migrate:fresh
+npm run build
 ```
 
 Открыть в браузере `http://localhost:80/`
