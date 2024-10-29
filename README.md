@@ -8,9 +8,9 @@ cd Laboratory_Internet
 cp .env.example .env
 sudo composer update
 php artisan key:generate
-php artisan migrate:fresh
 npm install
-sudo docker compose up
+sudo docker compose up -d
+vendor/bin/sail artisan migrate:fresh
 ```
 
 Открыть в браузере `http://localhost:80/`
