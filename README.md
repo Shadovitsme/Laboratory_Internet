@@ -6,11 +6,11 @@
 git clone git@github.com:Shadovitsme/Laboratory_Internet.git
 cd Laboratory_Internet
 cp .env.example .env
-composer update
+sudo composer update
 php artisan key:generate
 php artisan migrate:fresh
 npm install
-docker compose up
+sudo docker compose up
 ```
 
 Открыть в браузере `http://localhost:80/`
